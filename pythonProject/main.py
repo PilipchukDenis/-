@@ -42,103 +42,98 @@
 
 
 
-# _____________________________ОСНОВНАЯ ВЕРСИЯ_______________________
-#
-# def show_menu():
-#     print("Меню: ")
-#     print("1. Добавить новое число в список")
-#     print("2. Удалить все вхождения числа из списка")
-#     print("3. Показать содержимое списка")
-#     print("4. Проверить, есть ли значение в списке")
-#     print("5. Заменить значение в списке")
-#     print("6. Выйти из программы")
-#
-#
-# def add_number(lst):
-#     num = int(input("Введите число для добавления: "))
-#     if num in lst:
-#         print(f"Число {num} уже существует в списке.")
-#     else:
-#         lst.append(num)
-#         print(f"Число {num} добавлено в список.")
-#
-#
-# def remove_number(lst):
-#     num = int(input("Введите число для удаления: "))
-#     if num in lst:
-#         lst[:] = [x for x in lst if x != num]
-#         print(f"Все вхождения числа {num} удалены из списка.")
-#     else:
-#         print(f"Число {num} не найдено в списке.")
-#
-#
-# def show_list(lst):
-#     direction = input("Вывести список с начала или с конца? (начало/конец): ").strip().lower()
-#     if direction == "начало":
-#         print("Содержимое списка: ", lst)
-#     elif direction == "конец":
-#         print("Содержимое списка: ", lst[::-1])
-#     else:
-#         print("Неверный выбор. Попробуйте снова.")
-#
-#
-# def check_number(lst):
-#     num = int(input("Введите число для проверки: "))
-#     if num in lst:
-#         print(f"Число {num} найдено в списке.")
-#     else:
-#         print(f"Число {num} не найдено в списке.")
-#
-#
-# def replace_number(lst):
-#     old_num = int(input("Введите число для замены: "))
-#     new_num = int(input("Введите новое число: "))
-#     all_occurrences = input("Заменить все вхождения или только первое? (все/первое): ").strip().lower()
-#
-#     if old_num not in lst:
-#         print(f"Число {old_num} не найдено в списке.")
-#         return
-#
-#     if all_occurrences == "все":
-#         lst[:] = [new_num if x == old_num else x for x in lst]
-#         print(f"Все вхождения числа {old_num} заменены на {new_num}.")
-#     elif all_occurrences == "первое":
-#         for i in range(len(lst)):
-#             if lst[i] == old_num:
-#                 lst[i] = new_num
-#                 print(f"Первое вхождение числа {old_num} заменено на {new_num}.")
-#                 break
-#     else:
-#         print("Неверный выбор. Попробуйте снова.")
-#
-#
-# def main():
-#     lst = list(map(int, input("Введите набор чисел, разделённых пробелами: ").split()))
-#
-#     while True:
-#         show_menu()
-#
-#         choice = input("Выберите пункт меню: ").strip()
-#
-#         if choice == '1':
-#             add_number(lst)
-#         elif choice == '2':
-#             remove_number(lst)
-#         elif choice == '3':
-#             show_list(lst)
-#         elif choice == '4':
-#             check_number(lst)
-#         elif choice == '5':
-#             replace_number(lst)
-#         elif choice == '6':
-#             print("Завершение программы.")
-#             break
-#         else:
-#             print("Неверный выбор. Попробуйте снова.")
-#
-#
-# if __name__ == "__main__":
-#     main()
+# _____________________________ ИСПРАВЛЕННАЯ ВЕРСИЯ_______________________
+
+from collections import deque 
+ 
+def print_menu(): 
+    printnМеню:") 
+    print("1. Добавить новое число в список") 
+    print("2. Удалить все вхождения числа из списка") 
+    print("3. Показать содержимое списка") 
+    print("4. Проверить наличие значения в списке") 
+    print("5. Заменить значение в списке") 
+    print("6. Выход") 
+ 
+def add_number(dq): 
+    num = int(input("Введите число для добавления: ")) 
+    if num in dq: 
+        print("Число уже существует в списке.") 
+    else: 
+        dq.append(num) 
+        print("Число добавлено.") 
+ 
+def remove_number(dq): 
+    num = int(input("Введите число для удаления: ")) 
+    count = dq.count(num) 
+    for _ in range(count): 
+        dq.remove(num) 
+    print(f"Число {num} удалено {count} раз.") 
+ 
+def show_list(dq): 
+    order = input("Показать список с начала или с конца? (начало/конец): ").lower() 
+    if order == 'начало': 
+        print("Содержимое списка:", list(dq)) 
+    elif order == 'конец': 
+        print("Содержимое списка:", list(dq)[::-1]) 
+    else: 
+        print("Неверный выбор.") 
+ 
+def check_number(dq): 
+    num = int(input("Введите число для проверки наличия: ")) 
+    if num in dq: 
+        print("Число есть в списке.") 
+    else: 
+        print("Числа нет в списке.") 
+ 
+def replace_number(dq): 
+    old_num = int(input("Введите число для замены: ")) 
+    new_num = int(input("Введите новое число: ")) 
+    choice = input("Заменить только первое вхождение или все? (первое/все): ").lower() 
+ 
+    if choice == 'первое': 
+        try: 
+            index = dq.index(old_num) 
+            dq[index] = new_num 
+            print("Первое вхождение числа заменено.") 
+        except ValueError: 
+            print("Число для замены не найдено.") 
+    elif choice == 'все': 
+        replaced = False 
+        for i in range(len(dq)): 
+            if dq[i] == old_num: 
+                dq[i] = new_num 
+                replaced = True 
+        if replaced: 
+            print("Все вхождения числа заменены.") 
+        else: 
+            print("Число для замены не найдено.") 
+    else: 
+        print("Неверный выбор.") 
+ 
+def main(): 
+    dq = deque() 
+    while True: 
+        print_menu() 
+        choice = input("Выберите пункт меню: ") 
+        if choice == '1': 
+            add_number(dq) 
+        elif choice == '2': 
+            remove_number(dq) 
+        elif choice == '3': 
+            show_list(dq) 
+        elif choice == '4': 
+            check_number(dq) 
+        elif choice == '5': 
+            replace_number(dq) 
+        elif choice == '6': 
+            print("Выход из программы.") 
+            break 
+        else: 
+            print("Неверный выбор. Попробуйте снова.") 
+ 
+if name == "__main__": 
+    main()
 
 
 
